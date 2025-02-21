@@ -1,7 +1,19 @@
-enum Metal {
-  Copper = 0,
-  Gold = 1,
-  Silver = 2,
-}
-
-export default Metal
+export type Metal =
+	| "COPPER"
+	| "ZINC"
+	| "BISMUTH"
+	| "TIN"
+	| "SILVER"
+	| "GOLD"
+	| "NICKEL"
+	| "IRON"
+	| "STEEL"
+	| "BRONZE"
+	| "BISMUTH_BRONZE"
+	| "BLACK_BRONZE"
+	| "BRASS"
+	| "ROSE_GOLD"
+	| "STERLING_SILVER"
+	| "BLACK_STEEL"
+	| "BLUE_STEEL"
+	| "RED_STEEL";
