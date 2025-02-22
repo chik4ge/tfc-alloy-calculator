@@ -31,7 +31,14 @@ const inventory: Ref<Item[]> = ref([
 const target: Ref<Metal> = ref("BISMUTH_BRONZE")
 const targetAmount: Ref<number> = ref(100)
 
-const result: Ref<Result> = ref({ recipes: [] })
+const result: Ref<Result> = ref({
+  calculated: false,
+  recipes: [],
+})
+
+const deleteSelectedItems = (indecies: Set<number>) => {
+  inventory.value = inventory.value.filter((_, index) => !indecies.has(index))
+}
 
 const calculate = () => {
   console.log("Calculate")
@@ -42,7 +49,7 @@ const calculate = () => {
   <div class="mx-auto grid w-full max-w-2xl grid-cols-1 gap-10 xl:max-w-5xl">
     <NavBar />
 
-    <Inventory :inventory="inventory" />
+    <Inventory :inventory="inventory" @deleteSelectedItems="deleteSelectedItems" />
 
     <TargetSelector :targetAlloy="target" :targetAmount="targetAmount" />
 
@@ -50,7 +57,7 @@ const calculate = () => {
 
     <div class="divider" />
 
-    <CalculateResult />
+    <CalculateResult :result="result" />
   </div>
   <Footer />
 </template>

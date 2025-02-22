@@ -6,27 +6,13 @@ import type { Item } from "../types/item"
 import { METALS, type Metal } from "../types/metal"
 import InventoryItem from "./InventoryItem.vue"
 
-const items: Ref<Item[]> = ref([
-  {
-    metal: "ZINC",
-    grade: "NORMAL",
-    amount: 10,
-  },
-  {
-    metal: "COPPER",
-    grade: "NORMAL",
-    amount: 10,
-  },
-  {
-    metal: "TIN",
-    grade: "NORMAL",
-    amount: 10,
-  },
-])
+const props = defineProps<{
+  inventory: Item[]
+}>()
 
 const selectedItems: Ref<Set<number>> = ref(new Set())
 
-const selectedAll = computed(() => selectedItems.value.size === items.value.length)
+const selectedAll = computed(() => selectedItems.value.size === props.inventory.length)
 
 const updateSelected = (index: number, value: boolean) => {
   if (value) {
@@ -37,25 +23,28 @@ const updateSelected = (index: number, value: boolean) => {
 }
 
 const selectAll = (value: boolean) => {
-  console.log("Select all", value)
   if (value) {
-    selectedItems.value = new Set(items.value.map((_, index) => index))
+    selectedItems.value = new Set(props.inventory.map((_, index) => index))
   } else {
     selectedItems.value.clear()
   }
 }
 
-const deleteSelectedItems = () => {
-  items.value = items.value.filter((_, index) => !selectedItems.value.has(index))
-  selectedItems.value.clear()
-}
-
 const addNewItem = (metal: Metal) => {
-  items.value.push({
+  props.inventory.push({
     metal,
     grade: "NORMAL",
     amount: 10,
   })
+}
+
+const emit = defineEmits<{
+  deleteSelectedItems: [indecies: Set<number>]
+}>()
+
+const emitDeleteSelectedItems = () => {
+  emit("deleteSelectedItems", selectedItems.value)
+  selectedItems.value.clear()
 }
 </script>
 
@@ -75,7 +64,7 @@ const addNewItem = (metal: Metal) => {
             </li>
           </ul>
         </div>
-        <button class="join-item btn" @click="deleteSelectedItems">
+        <button class="join-item btn" @click="emitDeleteSelectedItems">
           <XMarkIcon class="size-6" />
           Delete
         </button>
@@ -83,7 +72,6 @@ const addNewItem = (metal: Metal) => {
     </div>
 
     <table class="table">
-      <!-- head -->
       <thead>
         <tr>
           <th>
@@ -97,7 +85,7 @@ const addNewItem = (metal: Metal) => {
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, index) in items" :key="index">
+        <tr v-for="(item, index) in inventory" :key="index">
           <InventoryItem
             :item="item"
             :selected="selectedItems.has(index)"
