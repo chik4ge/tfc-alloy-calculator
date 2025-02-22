@@ -14,17 +14,17 @@ const inventory: Ref<Item[]> = ref([
   {
     metal: "ZINC",
     grade: "NORMAL",
-    amount: 10,
+    count: 10,
   },
   {
     metal: "COPPER",
     grade: "NORMAL",
-    amount: 10,
+    count: 10,
   },
   {
     metal: "TIN",
     grade: "NORMAL",
-    amount: 10,
+    count: 10,
   },
 ])
 

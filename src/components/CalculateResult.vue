@@ -43,11 +43,12 @@ const creatable = props.result.recipes.length > 0
             <td>
               <ul>
                 <li v-for="item in recipe">
-                  {{ snakeToCamelWithSpaces(item.grade) }} {{ snakeToCamelWithSpaces(item.metal) }} × {{ item.count }}
+                  {{ snakeToCamelWithSpaces(item!!.grade) }} {{ snakeToCamelWithSpaces(item!!.metal) }} ×
+                  {{ item?.count }}
                 </li>
               </ul>
             </td>
-            <td>{{ recipe.reduce((acc, item) => acc + item.count * GRADEINFO[item.grade].amount, 0) }}mB</td>
+            <td>{{ recipe.reduce((acc, item) => acc + item!!.count * GRADEINFO[item!!.grade].amount, 0) }}mB</td>
           </tr>
         </tbody>
       </table>
