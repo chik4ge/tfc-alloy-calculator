@@ -3,10 +3,8 @@ import { PlusIcon, XMarkIcon } from "@heroicons/vue/24/outline"
 import { computed, type Ref, ref } from "vue";
 import { snakeToCamelWithSpaces } from "../common/stringUtils";
 import type { Item } from "../types/item"
-import { METALS } from "../types/metal"
+import { METALS, type Metal } from "../types/metal"
 import InventoryItem from "./InventoryItem.vue"
-
-const formattedMetals = ref(METALS.map(snakeToCamelWithSpaces));
 
 const items: Ref<Item[]> = ref([
     {
@@ -52,7 +50,7 @@ const deleteSelectedItems = () => {
     selectedItems.value.clear();
 };
 
-const addNewItem = (metal: string) => {
+const addNewItem = (metal: Metal) => {
     items.value.push({
         metal,
         grade: "NORMAL",
@@ -73,8 +71,8 @@ const addNewItem = (metal: string) => {
                         Add
                     </button>
                     <ul tabindex="0" class="dropdown-content menu bg-base-200 rounded-box z-[1] w-52 p-2 shadow">
-                        <li v-for="metal in formattedMetals" :key="metal">
-                            <a v-on:click="addNewItem(metal)">{{ metal }}</a>
+                        <li v-for="metal in METALS" :key="metal">
+                            <a v-on:click="addNewItem(metal)">{{ snakeToCamelWithSpaces(metal) }}</a>
                         </li>
                     </ul>
                 </div>
