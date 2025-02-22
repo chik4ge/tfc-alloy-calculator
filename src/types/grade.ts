@@ -1,6 +1,8 @@
-export type Grade = "SMALL" | "POOR" | "NORMAL" | "RICH" | "INGOT";
+export const GRADES = ["SMALL", "POOR", "NORMAL", "RICH", "INGOT"] as const;
 
-export const GradeInfo: {
+export type Grade = (typeof GRADES)[number];
+
+export const GRADEINFO: {
 	[key in Grade]: {
 		amount: number;
 		stackSize: number;
