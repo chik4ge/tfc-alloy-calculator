@@ -34,7 +34,7 @@ const addNewItem = (metal: Metal) => {
   props.inventory.push({
     metal,
     grade: "NORMAL",
-    amount: 10,
+    count: 10,
   })
 }
 

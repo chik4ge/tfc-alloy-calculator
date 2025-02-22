@@ -41,7 +41,7 @@ const iconSrc = computed(() => `/img/${props.item.metal.toLowerCase().replace(" 
     <label class="form-control w-full max-w-xs">
       <input
         type="number"
-        v-bind:value="item.amount"
+        v-bind:value="item.count"
         placeholder="Target Amount (for Ingot: 100mB)"
         class="input input-bordered"
       />

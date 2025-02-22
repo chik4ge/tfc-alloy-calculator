@@ -32,8 +32,61 @@ const target: Ref<Metal> = ref("BISMUTH_BRONZE")
 const targetAmount: Ref<number> = ref(100)
 
 const result: Ref<Result> = ref({
-  calculated: false,
-  recipes: [],
+  calculated: true,
+  recipes: [
+    [
+      {
+        metal: "BISMUTH_BRONZE",
+        grade: "NORMAL",
+        count: 5,
+        recipe: "BISMUTH_BRONZE",
+      },
+      {
+        metal: "ZINC",
+        grade: "NORMAL",
+        count: 2,
+        recipe: "BISMUTH_BRONZE",
+      },
+      {
+        metal: "IRON",
+        grade: "NORMAL",
+        count: 3,
+        recipe: "BISMUTH_BRONZE",
+      },
+      {
+        metal: "ROSE_GOLD",
+        grade: "NORMAL",
+        count: 1,
+        recipe: "BISMUTH_BRONZE",
+      },
+    ],
+    [
+      {
+        metal: "BISMUTH_BRONZE",
+        grade: "NORMAL",
+        count: 100,
+        recipe: "BISMUTH_BRONZE",
+      },
+      {
+        metal: "ZINC",
+        grade: "NORMAL",
+        count: 100,
+        recipe: "BISMUTH_BRONZE",
+      },
+      {
+        metal: "IRON",
+        grade: "NORMAL",
+        count: 100,
+        recipe: "BISMUTH_BRONZE",
+      },
+      {
+        metal: "ROSE_GOLD",
+        grade: "NORMAL",
+        count: 100,
+        recipe: "BISMUTH_BRONZE",
+      },
+    ],
+  ],
 })
 
 const deleteSelectedItems = (indecies: Set<number>) => {
@@ -53,11 +106,11 @@ const calculate = () => {
 
     <TargetSelector :targetAlloy="target" :targetAmount="targetAmount" />
 
-    <CalculateButton :clicked="calculate" />
+    <CalculateButton @clicked="calculate" />
 
     <div class="divider" />
 
-    <CalculateResult :result="result" />
+    <CalculateResult v-if="result.calculated" :result="result" :target="target" :targetAmount="targetAmount" />
   </div>
   <Footer />
 </template>
