@@ -3,7 +3,7 @@ import { MoonIcon, SunIcon } from "@heroicons/vue/24/outline"
 </script>
 
 <template>
-  <div class="flex">
+  <div class="flex grow-0">
     <div class="navbar bg-base-100">
       <div class="flex-1 flex items-baseline">
         <a class="btn btn-ghost normal-case text-xl">TFC Alloy Calculator</a>

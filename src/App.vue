@@ -32,7 +32,7 @@ const target: Ref<Metal> = ref("BISMUTH_BRONZE")
 const targetAmount: Ref<number> = ref(100)
 
 const result: Ref<Result> = ref({
-  calculated: true,
+  calculated: false,
   recipes: [
     [
       {
@@ -99,7 +99,8 @@ const calculate = () => {
 </script>
 
 <template>
-  <div class="mx-auto grid w-full max-w-2xl grid-cols-1 gap-10 xl:max-w-5xl">
+  <!-- <div class="mx-auto grid w-full max-w-2xl grid-cols-1 gap-10 xl:max-w-5xl"> -->
+  <div class="mx-auto w-full max-w-2xl flex flex-col gap-10 xl:max-w-5xl">
     <NavBar />
 
     <Inventory :inventory="inventory" @deleteSelectedItems="deleteSelectedItems" />
