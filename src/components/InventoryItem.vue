@@ -1,26 +1,28 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import { snakeToCamelWithSpaces } from '../common/stringUtils';
 import { GRADEINFO, GRADES } from '../types/grade';
 import type { Item } from '../types/item';
 
 const props = defineProps<{
     item: Item,
+    selected: boolean,
 }>();
 
-const iconSrc = `/img/${props.item.metal.toLowerCase()}.png`;
+const iconSrc = computed(() => `/img/${props.item.metal.toLowerCase().replace(" ", "_")}.png`);
 </script>
 
 <template>
     <th>
         <label>
-            <input type="checkbox" class="checkbox" />
+            <input type="checkbox" class="checkbox" :checked="selected" @change="$emit('update:selected', !selected)" />
         </label>
     </th>
     <td>
         <div class="flex items-center gap-3">
             <div class="avatar">
                 <div class="h-12 w-12">
-                    <img :src="iconSrc" alt="Copper" style="image-rendering: pixelated" />
+                    <img :src="iconSrc" style="image-rendering: pixelated" />
                 </div>
             </div>
             <div class="font-bold">{{ snakeToCamelWithSpaces(props.item.metal) }}</div>

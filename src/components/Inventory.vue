@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { PlusIcon, XMarkIcon } from "@heroicons/vue/24/outline"
-import { type Ref, ref } from "vue";
+import { computed, type Ref, ref } from "vue";
 import { snakeToCamelWithSpaces } from "../common/stringUtils";
 import type { Item } from "../types/item"
 import { METALS } from "../types/metal"
@@ -8,25 +8,57 @@ import InventoryItem from "./InventoryItem.vue"
 
 const formattedMetals = ref(METALS.map(snakeToCamelWithSpaces));
 
-const items: Ref<Item[]> = ref(
-    [
-        {
-            metal: "ZINC",
-            grade: "NORMAL",
-            amount: 10
-        },
-        {
-            metal: "COPPER",
-            grade: "NORMAL",
-            amount: 10
-        },
-        {
-            metal: "TIN",
-            grade: "NORMAL",
-            amount: 10
-        }
-    ]
-)
+const items: Ref<Item[]> = ref([
+    {
+        metal: "ZINC",
+        grade: "NORMAL",
+        amount: 10
+    },
+    {
+        metal: "COPPER",
+        grade: "NORMAL",
+        amount: 10
+    },
+    {
+        metal: "TIN",
+        grade: "NORMAL",
+        amount: 10
+    }
+]);
+
+const selectedItems: Ref<Set<number>> = ref(new Set());
+
+const selectedAll = computed(() => selectedItems.value.size === items.value.length);
+
+const updateSelected = (index: number, value: boolean) => {
+    if (value) {
+        selectedItems.value.add(index);
+    } else {
+        selectedItems.value.delete(index);
+    }
+};
+
+const selectAll = (value: boolean) => {
+    console.log("Select all", value);
+    if (value) {
+        selectedItems.value = new Set(items.value.map((_, index) => index));
+    } else {
+        selectedItems.value.clear();
+    }
+};
+
+const deleteSelectedItems = () => {
+    items.value = items.value.filter((_, index) => !selectedItems.value.has(index));
+    selectedItems.value.clear();
+};
+
+const addNewItem = (metal: string) => {
+    items.value.push({
+        metal,
+        grade: "NORMAL",
+        amount: 10
+    });
+};
 
 </script>
 
@@ -42,11 +74,11 @@ const items: Ref<Item[]> = ref(
                     </button>
                     <ul tabindex="0" class="dropdown-content menu bg-base-200 rounded-box z-[1] w-52 p-2 shadow">
                         <li v-for="metal in formattedMetals" :key="metal">
-                            <a>{{ metal }}</a>
+                            <a v-on:click="addNewItem(metal)">{{ metal }}</a>
                         </li>
                     </ul>
                 </div>
-                <button class="join-item btn">
+                <button class="join-item btn" @click="deleteSelectedItems">
                     <XMarkIcon class="size-6" />
                     Delete
                 </button>
@@ -59,7 +91,8 @@ const items: Ref<Item[]> = ref(
                 <tr>
                     <th>
                         <label>
-                            <input type="checkbox" class="checkbox" />
+                            <input type="checkbox" class="checkbox" :checked="selectedAll"
+                                @change="selectAll(!selectedAll)" />
                         </label>
                     </th>
                     <th>Metal</th>
@@ -69,7 +102,8 @@ const items: Ref<Item[]> = ref(
             </thead>
             <tbody>
                 <tr v-for="(item, index) in items" :key="index">
-                    <InventoryItem :item="item" />
+                    <InventoryItem :item="item" :selected="selectedItems.has(index)"
+                        @update:selected="updateSelected(index, $event)" />
                 </tr>
             </tbody>
         </table>
